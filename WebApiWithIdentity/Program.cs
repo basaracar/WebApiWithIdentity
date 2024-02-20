@@ -8,7 +8,12 @@ using WebApiWithIdentity.Auth;
 var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration;
 // Add services to the container.
+#if (!DEBUG)
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("ConString")));
+#else
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("ServerString")));
+#endif
+
 
 // For Identity
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
